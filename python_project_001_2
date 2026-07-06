@@ -1,0 +1,133 @@
+import random
+
+words = ["python", "program", "developer", "hangman", "challenge"]
+
+secret_word = random.choice(words)
+letters = list(secret_word)
+
+guessed_letters = []
+line_guessed_letters = []
+
+
+tries = 6
+
+type_flg = 0
+type_mode = 0
+
+print("ハングマンへようこそ！")
+
+p = "_" * len(secret_word)
+
+while tries > 0:
+    print("\n")
+
+    type_flg = 0
+
+    if tries <= 3:
+        if secret_word == "python":
+            print("ヒント: プログラム言語です")
+        if secret_word == "program":
+            print("ヒント: 人と機械を繋ぐコード入力の総称です")
+        if secret_word == "developer":
+            print("ヒント: プログラムを開発する人")
+        if secret_word == "hangman":
+            print("ヒント: 出題者が隠した英単語を、プレイヤーが1文字ずつ推測して当てる伝統的なワードパズルゲーム")
+        if secret_word == "challenge":
+            print("ヒント: 挑戦する人のこと")
+
+
+    print(f"現在の単語: {p}")
+    print(f"現在の全入力単語: {line_guessed_letters}")
+    print(f"残りの試行回数: {tries}")
+    print("これまでの推測:", " ".join(guessed_letters))
+
+
+    
+    while type_flg == 0:
+        type_style_select = input("単語全体入力で当てる場合は、「y」\n 1文字ごとに当てたい場合は、「n」を入力して下さい: ").lower()
+
+        if len(type_style_select) != 1:
+            print("1文字だけ入力してください。")
+            continue
+
+        if not type_style_select.isalpha():
+            print("アルファベットを入力してください。")
+            continue
+
+        if type_style_select not in ["y", "n"]:
+            print("エラー: y または n を入力してください。")
+        else:
+            if type_style_select == "y":
+                type_flg = 1
+                type_mode = 1
+
+            elif type_style_select == "n":
+                type_flg = 1
+                type_mode = 2
+    
+    if type_mode == 1:
+        line_guess = input("英単語を予想してください: ").lower()
+
+        if not line_guess.isalpha():
+            print("アルファベットを入力してください。")
+            continue
+
+        if line_guess in line_guessed_letters:
+            print("すでに予想した英単語です。")
+            continue
+
+
+        line_guessed_letters.append(line_guess)
+
+
+        if line_guess == secret_word:
+            print("\nおめでとうございます！")
+            print(f"正解は「{secret_word}」でした。")
+            break
+        else:
+            print("不正解です。")
+            tries -= 1
+
+
+
+
+    if type_mode == 2:
+        guess = input("一文字を予想してください: ").lower()
+
+        if len(guess) != 1:
+            print("1文字だけ入力してください。")
+            continue
+
+        if not guess.isalpha():
+            print("アルファベットを入力してください。")
+            continue
+
+        if guess in guessed_letters:
+            print("すでに予想した文字です。")
+            continue
+
+        guessed_letters.append(guess)
+
+        if guess in letters:
+            print("正解です！")
+        else:
+            print("不正解です。")
+            tries -= 1
+
+        display_word = ""
+
+        for letter in letters:
+            if letter in guessed_letters:
+                display_word += letter
+            else:
+                display_word += "_"
+
+        p = display_word
+
+        if p == secret_word:
+            print("\nおめでとうございます！")
+            print(f"正解は「{secret_word}」でした。")
+            break
+
+if tries == 0:
+    print(f"\n残念！正解は「{secret_word}」でした。")
