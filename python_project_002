@@ -1,0 +1,23 @@
+import csv
+import random
+
+data = []
+for _ in range(10):
+    row = [random.randint(1, 100), random.randint(1, 100), random.randint(1, 100)]
+    data.append(row)
+
+with open("random_numbers.csv", "w", newline="", encoding="utf-8") as file:
+    writer = csv.writer(file)
+    writer.writerow(["Value1", "Value2", "Value3"])  # ヘッダーの書き込み
+    writer.writerows(data)
+
+with open("random_numbers.csv", "r", encoding="utf-8") as file:
+    reader = csv.reader(file)
+    for row in reader:
+        
+        for row in reader:
+            numbers = [int(value) for value in row]
+            total = sum(numbers)
+            ave = total / 3
+            print(f"行の数値: {row}, 合計: {total}, 平均: {ave:.2f}")
+        
